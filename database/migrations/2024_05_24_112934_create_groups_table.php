@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('status');
+            $table->string('name');
+            $table->date("start_date")->nullable();
+            $table->time("start_hour")->nullable();
+            $table->unsignedBigInteger("filial_id")->nullable();
+            $table->unsignedBigInteger("cource_id")->nullable();
+            $table->unsignedBigInteger("lang_id")->nullable();
+            $table->unsignedBigInteger("day_id")->nullable();
+            $table->tinyInteger('max_student')->nullable();
+            $table->tinyInteger('max_teacher')->nullable();
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

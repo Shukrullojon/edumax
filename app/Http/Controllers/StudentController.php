@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cource;
+use App\Models\Day;
+use App\Models\File;
 use App\Models\Group;
+use App\Models\GroupStudent;
+use App\Models\Helper;
+use App\Models\Lang;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class StudentController extends Controller
 {
@@ -75,9 +83,18 @@ class StudentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $groups = Group::whereIn('status', [1, 2])->get()->pluck('name', 'id');
+        $cources = Cource::where('status', 1)->pluck('name', 'id');
+        $langs = Lang::pluck('name', 'id');
+        $days = Day::pluck('name', 'id');
+        return view('student.create', [
+            'groups' => $groups,
+            'cources' => $cources,
+            'langs' => $langs,
+            'days' => $days,
+        ]);
     }
 
     /**
@@ -85,7 +102,40 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->merge(
+            ['phone' => str_replace(['(', ')', '-'], '', $request->phone)],
+        );
+        $this->validate($request, [
+            'name' => 'required|min:3|max:50',
+            'surname' => 'required|min:3|max:50',
+            'status' => 'required|in:0,1,2,3,4,5,6,21',
+            'phone' => 'required|max:9',
+        ]);
+        $role = Role::where('name', 'Student')->first();
+        $student = User::create([
+            'id_code' => $request->id_code,
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'status' => $request->status,
+            'phone' => $request->phone,
+            'password' => Hash::make($request->phone),
+            'interes_cource_id' => $request->cource_id,
+            'interes_day_id' => $request->day_id,
+            'interes_time' => date("H:i:s", strtotime($request->interes_hour.":".$request->interes_minute)),
+        ]);
+
+        $student->assignRole([$role->id]);
+        if ($request->group_id) {
+            GroupStudent::create([
+                'group_id' => $request->group_id,
+                'student_id' => $student->id,
+                'status' => 1,
+            ]);
+        }
+
+        return redirect()->route('student.index',[
+            'status' => $request->status_page
+        ])->with('success', 'Student create successfully');
     }
 
     /**
@@ -93,7 +143,10 @@ class StudentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $student = User::find($id);
+        return view('student.show',[
+            'student' => $student,
+        ]);
     }
 
     /**
@@ -101,7 +154,18 @@ class StudentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $groups = Group::whereIn('status', [1, 2])->get()->pluck('name', 'id');
+        $cources = Cource::where('status', 1)->pluck('name', 'id');
+        $langs = Lang::pluck('name', 'id');
+        $days = Day::pluck('name', 'id');
+        $student = User::find($id);
+        return view('student.edit', [
+            'groups' => $groups,
+            'cources' => $cources,
+            'langs' => $langs,
+            'days' => $days,
+            'student' => $student,
+        ]);
     }
 
     /**
@@ -109,7 +173,78 @@ class StudentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->merge(
+            ['phone' => str_replace(['(', ')', '-'], '', $request->phone)],
+        );
+        $this->validate($request, [
+            'name' => 'required|min:3|max:50',
+            'surname' => 'required|min:3|max:50',
+            'email' => 'nullable|email',
+            'status' => 'required|in:0,1,2,3,4,5,6,21',
+            'phone' => 'required',
+        ]);
+        $student = User::find($id);
+        if ($request->group_id) {
+            GroupStudent::where('student_id', $student->id)->where('status', 1)->update([
+                'status' => 0,
+                'closed_at' => date('Y-m-d H:i:s'),
+            ]);
+            GroupStudent::create([
+                'group_id' => $request->group_id,
+                'student_id' => $student->id,
+                'status' => 1,
+            ]);
+        }
+
+        if ($request->hasFile('image')){
+            if (!empty($student->image)){
+                Storage::delete('public/image/'.$student->image);
+            }
+            $filenameWithExt = $request->file('image')->getClientOriginalName ();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = $filename. '_'. time().'.'.$extension;
+            $request->image->move(public_path('image'), $fileNameToStore);
+            $student->update([
+                'image' => $fileNameToStore,
+            ]);
+        }
+
+        if ($request->hasFile('docs')){
+            File::where('model',User::class)
+                ->where('model_id',$student->id)
+                ->delete();
+            foreach ($request->docs as $doc){
+                $filenameWithExt = $doc->getClientOriginalName ();
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $doc->getClientOriginalExtension();
+                $fileNameToStore = $filename. '_'. time().'.'.$extension;
+                $doc->move(public_path('image'), $fileNameToStore);
+                File::create([
+                    'model' => User::class,
+                    'model_id' => $student->id,
+                    'file' => $fileNameToStore,
+                    'type' => 0,
+                ]);
+            }
+        }
+
+        $student->update([
+            'id_code' => $request->id_code,
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'status' => $request->status,
+            'phone' => $request->phone,
+            'comment' => $request->comment,
+            'series_number' => $request->series_number,
+            'interes_cource_id' => $request->cource_id,
+            'interes_day_id' => $request->day_id,
+            'interes_time' => date("H:i:s", strtotime($request->interes_hour.":".$request->interes_minute)),
+        ]);
+
+        return redirect()->route('student.index',[
+            'status' => $student->status
+        ])->with('success', 'Student update successfully');
     }
 
     /**
@@ -117,6 +252,8 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        User::find($id)->delete();
+        return redirect()->route('student.index')
+            ->with('success', 'Student deleted successfully');
     }
 }

@@ -38,6 +38,10 @@ class User extends Authenticatable
         'series_number',
         'filial_id',
         'status',
+        'id_code',
+        'interes_cource_id',
+        'interes_day_id',
+        'interes_time',
     ];
 
     /**
@@ -73,5 +77,13 @@ class User extends Authenticatable
     public function langs()
     {
         return $this->belongsToMany(Lang::class, 'user_lang', 'user_id', 'lang_id');
+    }
+
+    public function interes_cource(){
+        return $this->belongsTo(Cource::class,'interes_cource_id','id');
+    }
+
+    public function interes_day(){
+        return $this->belongsTo(Day::class,'interes_day_id','id');
     }
 }

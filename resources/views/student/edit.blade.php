@@ -7,108 +7,136 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Create Staff</h3>
+                        <h3 class="card-title">Edit Student</h3>
                     </div>
                     <div class="card-body">
-                        {!! Form::model($staff, ['method' => 'PATCH','route' => ['staff.update', $staff->id]]) !!}
+                        {!! Form::model($student, ['method' => 'PATCH','route' => ['student.update', $student->id]]) !!}
                         <div class="row">
-                            <div class="col-xs-4 col-sm-4 col-md-4">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
-                                    <label for="name"><strong>Name:</strong></label>{!! Form::label('name',"*",['style'=>"color:red"]) !!}
-                                    {!! Form::text('name', null, ['autocomplete'=>'OFF','id'=>'name','placeholder' => 'Name','required'=>true,'class' => "form-control ".($errors->has('name') ? 'is-invalid' : '')]) !!}
-                                    @if($errors->has('name'))
-                                        <span class="error invalid-feedback">{{ $errors->first('name') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 col-sm-4 col-md-4">
-                                <div class="form-group">
-                                    <label for="surname"><strong>Surname:</strong></label>{!! Form::label('surname',"*",['style'=>"color:red"]) !!}
-                                    {!! Form::text('surname', null, ['autocomplete'=>'OFF','id'=>'surname','placeholder' => 'Surname','required'=>true,'class' => "form-control ".($errors->has('surname') ? 'is-invalid' : '')]) !!}
-                                    @if($errors->has('surname'))
-                                        <span class="error invalid-feedback">{{ $errors->first('surname') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 col-sm-4 col-md-4">
-                                <div class="form-group">
-                                    <label for="filial_id"><strong>Filial:</strong></label>{!! Form::label('filial_id',"*",['style'=>"color:red"]) !!}
-                                    {!! Form::select('filial_id', $filials,$staff->filial_id, ['autocomplete'=>'OFF','id'=>'filial_id','required'=>true,'class' => "form-control ".($errors->has('filial_id') ? 'is-invalid' : '')]) !!}
-                                    @if($errors->has('filial_id'))
-                                        <span class="error invalid-feedback">{{ $errors->first('filial_id') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 col-sm-4 col-md-4">
-                                <div class="form-group">
-                                    <label for="phone"><strong>Phone:</strong></label>{!! Form::label('phone',"*",['style'=>"color:red"]) !!}
-                                    {!! Form::text('phone', null, ['autocomplete'=>'OFF','id'=>'phone', 'placeholder' => "(XX)XXX-XX-XX",'required'=>true,'class' => "form-control ".($errors->has('phone') ? 'is-invalid' : '')]) !!}
-                                    @if($errors->has('phone'))
-                                        <span class="error invalid-feedback">{{ $errors->first('phone') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 col-sm-4 col-md-4">
-                                <div class="form-group">
-                                    <label for="password"><strong>Password:</strong></label>{!! Form::label('password',"*",['style'=>"color:red"]) !!}
-                                    {!! Form::password('password', ['autocomplete'=>'OFF','id'=>'password','placeholder' => 'Password','class' => 'form-control']) !!}
-                                    @if($errors->has('password'))
-                                        <span class="error invalid-feedback">{{ $errors->first('password') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 col-sm-4 col-md-4">
-                                <div class="form-group">
-                                    <label for="confirm-password"><strong>Confirm Password:</strong></label>{!! Form::label('confirm-password',"*",['style'=>"color:red"]) !!}
-                                    {!! Form::password('confirm-password', ['autocomplete'=>'OFF','id'=>'confirm-password','placeholder' => 'Confirm Password','class' => 'form-control']) !!}
-                                    @if($errors->has('confirm-password'))
-                                        <span class="error invalid-feedback">{{ $errors->first('confirm-password') }}</span>
-                                    @endif
+                                    <strong>Id Code:</strong> {!! Form::label('*',"*",['style'=>"color:red"]) !!}
+                                    {!! Form::text('id_code', null, array('placeholder' => 'Id Code','class' => 'form-control')) !!}
                                 </div>
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3">
                                 <div class="form-group">
-                                    <label for="roles"><strong>Roles:</strong></label>{!! Form::label('roles',"*",['style'=>"color:red"]) !!}
-                                    {!! Form::select('roles[]', $roles,$user_roles, ['id'=>'roles','required'=>true,'class' => 'form-control','multiple', 'data-control'=>'select2']) !!}
-                                    @if($errors->has('roles'))
-                                        <span class="error invalid-feedback">{{ $errors->first('roles') }}</span>
-                                    @endif
+                                    <strong>Name:</strong> {!! Form::label('*',"*",['style'=>"color:red"]) !!}
+                                    {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
                                 </div>
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3">
                                 <div class="form-group">
-                                    <label for="directions"><strong>Directions:</strong></label>{!! Form::label('directions',"*",['style'=>"color:red"]) !!}
-                                    {!! Form::select('directions[]', $directions,$staff->directions, ['id'=>'directions','data-control'=>'select2','class' => 'form-control form-select-solid','multiple']) !!}
-                                    @if($errors->has('directions'))
-                                        <span class="error invalid-feedback">{{ $errors->first('directions') }}</span>
-                                    @endif
+                                    <strong>Surname:</strong> {!! Form::label('*',"*",['style'=>"color:red"]) !!}
+                                    {!! Form::text('surname', null, array('placeholder' => 'Surname','class' => 'form-control')) !!}
                                 </div>
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3">
                                 <div class="form-group">
-                                    <label for="langs"><strong>Langs:</strong></label>{!! Form::label('langs',"*",['style'=>"color:red"]) !!}
-                                    {!! Form::select('langs[]', $langs,$staff->langs, ['id'=>'langs',/*'data-control'=>'select2',*/'class' => 'form-control form-select-solid','multiple' => true]) !!}
-                                    @if($errors->has('langs'))
-                                        <span class="error invalid-feedback">{{ $errors->first('langs') }}</span>
-                                    @endif
+                                    <strong>Phone:</strong> {!! Form::label('*',"*",['style'=>"color:red"]) !!}
+                                    {!! Form::text('phone', null, ['id' => 'phone','placeholder' => "(XX)XXX-XX-XX",'class' => 'form-control']) !!}
                                 </div>
                             </div>
 
                             <div class="col-xs-3 col-sm-3 col-md-3">
                                 <div class="form-group">
-                                    <label for="status"><strong>Status:</strong></label>{!! Form::label('status',"*",['style'=>"color:red"]) !!}
-                                    {!! Form::select('status',\App\Models\User::$staff_status, $staff->status, ['id' => 'status','required'=>true, 'class' => 'form-control']) !!}
-                                    @if($errors->has('status'))
-                                        <span class="error invalid-feedback">{{ $errors->first('status') }}</span>
-                                    @endif
+                                    <strong>Status:</strong> {!! Form::label('*',"*",['style'=>"color:red"]) !!}
+                                    {!! Form::select('status', \App\Models\User::$student_status,$student->status, ['class' => 'form-control', 'data-control'=>"select2"]) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <strong>Group:</strong>
+                                    {!! Form::select('group_id', $groups, null, ['placeholder' => 'Select a group','class' => 'form-control','data-control'=>"select2"]) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <strong>Email:</strong>
+                                    {!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <strong>Series Number:</strong>
+                                    {!! Form::text('series_number', null, ['placeholder' => '','class' => 'form-control']) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                <div class="form-group">
+                                    <label><strong>Image:</strong></label><br>
+                                    <input type="file" name="image" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                <div class="form-group">
+                                    <label><strong>Docs:</strong></label><br>
+                                    <input type="file" name="docs[]" multiple="multiple" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <strong>Comment:</strong>
+                                    {!! Form::textarea('comment', null, ['placeholder' => '', 'rows' => 3,'class' => 'form-control']) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <strong>Interes Cource:</strong>
+                                    {!! Form::select('cource_id', $cources, null, ['placeholder' => 'Select a Cource','class' => 'form-control','data-control'=>"select2"]) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <strong>Interes Day:</strong>
+                                    {!! Form::select('day_id', $days, null, ['placeholder' => 'Select a Day','class' => 'form-control','data-control'=>"select2"]) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <strong>Interes Time:</strong>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <select name="interes_hour" id="interes_hour" class="form-control">
+                                                <option value="06">06</option>
+                                                <option value="07">07</option>
+                                                <option value="08">08</option>
+                                                <option value="09">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                <option value="13">13</option>
+                                                <option value="14">14</option>
+                                                <option value="15">15</option>
+                                                <option value="16">16</option>
+                                                <option value="17">17</option>
+                                                <option value="18">18</option>
+                                                <option value="19">19</option>
+                                                <option value="20">20</option>
+                                                <option value="21">21</option>
+                                                <option value="22">22</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select name="interes_minute" id="end_minute" class="form-control">
+                                                <option value="00">00</option>
+                                                <option value="15">15</option>
+                                                <option value="30">30</option>
+                                                <option value="45">45</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

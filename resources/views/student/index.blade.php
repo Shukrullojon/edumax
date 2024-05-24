@@ -76,7 +76,7 @@
                         </h3>
 
                         @can('student-create')
-                            <a href="{{ route('student.create') }}" class="btn btn-success btn-sm float-right" style="margin-top: 7px">
+                            <a href="{{ route('student.create',['status' => request()->get('status')]) }}" class="btn btn-success btn-sm float-right" style="margin-top: 7px">
                                 <span class="fas fa-plus-circle"></span>
                                 Create
                             </a>
@@ -139,7 +139,7 @@
                                         @if(request()->get('status') == 1 or request()->get('status') == 2 or request()->get('status') == 3)
                                             <td>
                                                 <i>
-                                                    @if(!empty($student->cource->name)) {{ $student->cource->name ?? '' }} / {{ $student->day->name ?? '' }} / {{ date("H:i", strtotime($student->interes_time)) }} @endif
+                                                    @if(!empty($student->interes_cource->name)) {{ $student->interes_cource->name ?? '' }} / {{ $student->interes_day->name ?? '' }} / {{ date("H:i", strtotime($student->interes_time)) }} @endif
                                                 </i>
                                             </td>
                                         @endif
@@ -148,26 +148,40 @@
                                             <td><i>{{ $student->group->group->name ?? '' }}</i></td>
                                         @endif
                                         <td><i>{{ \App\Models\User::$student_status[$student->status] ?? '' }}</i></td>
-                                        <td>
+                                        <td class="" width="15px">
                                             <div class="btn-group">
-                                                <a class="" style="margin-right: 10px" target="_blank"
-                                                   href="{{ route('student.show',$student->id) }}">
-                                                    <span class="fa fa-eye"></span>
-                                                </a>
+                                                @can('student-show')
+                                                    <a class="" href="{{ route('student.show',$student->id) }}" style="margin-right: 7px">
+                                                        <span class="fa fa-eye"></span>
+                                                    </a>
+                                                @endcan
 
-                                                <a class="" style="margin-right: 2px" href="{{ route('student.edit',$student->id) }}">
-                                                    <span class="fa fa-edit" style="color: #562bb0"></span>
-                                                </a>
+                                                @can('student-edit')
+                                                    <a class="" href="{{ route('student.edit',$student->id) }}" style="margin-right: 2px">
+                                                        <span class="fa fa-edit" style="color: #562bb0"></span>
+                                                    </a>
+                                                @endcan
+
+                                                @can('student-destroy')
+                                                    <form action="{{ route("student.destroy", $student->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <input name="_method" type="hidden" value="DELETE">
+                                                        <button type="button"
+                                                                style='display:inline; border:none; background: none'
+                                                                onclick="if (confirm('Are you sure?')) { this.form.submit() } "><span
+                                                                class="fa fa-trash"></span></button>
+                                                    </form>
+                                                @endcan
                                             </div>
                                         </td>
-
                                     </tr>
                                 @endforeach
                             </tbody>
                             <tfooter>
                                 <tr>
                                     <td colspan="12">
-                                        {{ $departments->withQueryString()->links()   }}
+                                        {{ $students->withQueryString()->links()   }}
                                     </td>
                                 </tr>
                             </tfooter>
@@ -187,12 +201,24 @@
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-12 col-md-12">
                                                 <div class="form-group">
-                                                    <strong>Название:</strong>
-                                                    {!! Form::text('name', request()->get('name'), ['placeholder' => 'Название','maxlength'=> 100,'class' => 'form-control']) !!}
+                                                    <strong>Name:</strong>
+                                                    {!! Form::text('name', request()->get('name'), ['placeholder' => 'Name','maxlength'=> 100,'class' => 'form-control']) !!}
                                                 </div>
                                             </div>
 
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <strong>Surname:</strong>
+                                                    {!! Form::text('surname', request()->get('surname'), ['placeholder' => 'Surname','maxlength'=> 100,'class' => 'form-control']) !!}
+                                                </div>
+                                            </div>
 
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <strong>Status:</strong>
+                                                    {!! Form::select('status', \App\Models\User::$student_status,request()->get('status'), ['placeholder' => '','maxlength'=> 100,'class' => 'form-control']) !!}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer justify-content-between">
