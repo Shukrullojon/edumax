@@ -105,9 +105,19 @@ class PermissionSeeder extends Seeder
 
             // Group
             ['name' => 'group-index'],
+            ['name' => 'group-filter'],
+            ['name' => 'group-show'],
+            ['name' => 'group-create'],
+            ['name' => 'group-store'],
+            ['name' => 'group-edit'],
+            ['name' => 'group-update'],
+            ['name' => 'group-destroy'],
 
             // Attendance
             ['name' => 'attendance-index'],
+
+            // Schedule
+            ['name' => 'schedule-index'],
         ];
         foreach ($permissionList as $item => $value){
             Permission::create($value);

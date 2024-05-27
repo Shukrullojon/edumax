@@ -17,10 +17,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('direction', \App\Http\Controllers\DirectionController::class);
     Route::resource('lang', \App\Http\Controllers\LangController::class);
     Route::resource('day', \App\Http\Controllers\DayController::class);
-
-    Route::resource('attendance', \App\Http\Controllers\AttendanceController::class);
-    Route::resource('group', \App\Http\Controllers\GroupController::class);
     Route::resource('student', \App\Http\Controllers\StudentController::class);
     Route::resource('staff', \App\Http\Controllers\StaffController::class);
+    Route::resource('group', \App\Http\Controllers\GroupController::class);
 
+    Route::resource('attendance', \App\Http\Controllers\AttendanceController::class);
 });
