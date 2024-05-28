@@ -38,4 +38,9 @@ class Group extends Model
     {
         return $this->hasMany(GroupTeacher::class,'group_id','id');
     }
+
+    public function lang()
+    {
+        return $this->belongsTo(Lang::class);
+    }
 }

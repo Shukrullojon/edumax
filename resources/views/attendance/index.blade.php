@@ -33,6 +33,86 @@
                             </div>
                         @endif
 
+                        @foreach($datas as $data)
+                            <table>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>{{ $data['group']['name'] ?? '' }}</td>
+                                        <td>{{ substr($data['group']['cource'] ?? '',0,10) }}</td>
+                                        <td>1-2</td>
+                                        <td>{{ $data['group']['day'] }}</td>
+                                        <td style="font-size: 10px">{{ $data['group']['time'] }}</td>
+                                        <td>{{ $data['group']['lang'] }}</td>
+                                        <td>{{ $data['group']['direction'] }}</td>
+                                        @foreach($data['days'] as $key => $value)
+                                            <td colspan="3" style="line-height: 15px">{{ date("d.m.Y", strtotime($key)) }}</td>
+                                        @endforeach
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">ID #</td>
+                                        <td colspan="2">Name</td>
+                                        <td colspan="2">Surname</td>
+                                        <td colspan="2">Age</td>
+                                        @foreach($data['days'] as $key => $value)
+                                            <td colspan="3">{{ $value['teacher'] }}</td>
+                                        @endforeach
+                                    </tr>
+
+                                    @foreach($data['students'] as $key_student => $value_student)
+                                        <tr>
+
+                                            <td colspan="2">{{ $value_student['id'] }}</td>
+                                            <td colspan="2">{{ substr($value_student['name'] ?? '',0,8) }}</td>
+                                            <td colspan="2">{{ substr($value_student['surname'] ?? '',0,8) }}</td>
+                                            <td colspan="2">{{ $value_student['age'] ?? '' }}</td>
+                                            @foreach($data['days'] as $key => $value_day)
+                                                @php
+                                                    $info = $value_day['students'][$value_student['id']] ?? [];
+                                                @endphp
+                                                @if(isset($info['attendance']))
+                                                    <td>
+                                                        <select class="my_select_class" name="attendance" >
+                                                            <option value="2">2</option>
+                                                            <option value="1">1</option>
+                                                            <option value="0">➖</option>
+                                                            <option value="3">➕</option>
+                                                            <option value="5">🟡</option>
+                                                            <option value="4">✔️</option>
+                                                            <option value="-1">❌️</option>
+                                                        </select>
+                                                    </td>
+                                                @endif
+                                                @if(isset($info['homework']))
+                                                    <td>
+                                                        <select class="my_select_class" name="homework">
+                                                            <option value="2">2</option>
+                                                            <option value="1">1</option>
+                                                            <option value="4">❕</option>
+                                                            <option value="0">➖</option>
+                                                            <option value="3">🟡</option>
+                                                        </select>
+                                                    </td>
+                                                @endif
+                                                @if(isset($info['ball']))
+                                                    <td>
+                                                        <select class="my_select_class" name="ball">
+                                                            <option value="0">0</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">️❤️</option>
+                                                            <option value="1">1</option>
+                                                            <option value="-1">◼️</option>
+                                                        </select>
+                                                    </td>
+                                                @endif
+                                            @endforeach
+                                        </tr>
+                                  @endforeach
+                                </table>
+                            <hr>
+                        @endforeach
+
+                        {{--<br>
                         <table>
                             <tr>
                                 <td>1</td>
@@ -1137,7 +1217,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <hr>
+                        <hr>--}}
 
                     </div>
                 </div>

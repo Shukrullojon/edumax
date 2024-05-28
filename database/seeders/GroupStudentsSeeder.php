@@ -88,6 +88,31 @@ class GroupStudentsSeeder extends Seeder
                 'status' => 1,
                 'closed_at' => date("Y-m-d"),
             ],
+            // 3 chi group malumotlari
+            [
+                'group_id' => 3,
+                'student_id' => 15,
+                'status' => 1,
+                'closed_at' => date("Y-m-d"),
+            ],
+            [
+                'group_id' => 3,
+                'student_id' => 16,
+                'status' => 1,
+                'closed_at' => date("Y-m-d"),
+            ],
+            [
+                'group_id' => 3,
+                'student_id' => 17,
+                'status' => 1,
+                'closed_at' => date("Y-m-d"),
+            ],
+            [
+                'group_id' => 3,
+                'student_id' => 18,
+                'status' => 1,
+                'closed_at' => date("Y-m-d"),
+            ],
         ];
         foreach ($datas as $data){
             GroupStudent::create($data);

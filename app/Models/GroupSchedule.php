@@ -12,4 +12,38 @@ class GroupSchedule extends Model
     protected $table = 'group_schedules';
 
     protected $guarded = [];
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
+
+    public function day()
+    {
+        return $this->belongsTo(Day::class);
+    }
+
+    public function direction()
+    {
+        return $this->belongsTo(Direction::class);
+    }
+
+    public function stud()
+    {
+        return $this->belongsTo(User::class,'student_id','id');
+    }
+    public function students()
+    {
+        return $this->hasMany(GroupStudent::class,'group_id','group_id')->orderByDesc('id');
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo(User::class,'teacher_id','id');
+    }
+
+    public function days()
+    {
+        return $this->hasMany(GroupSchedule::class,'group_id','group_id')->groupBy('date');
+    }
 }

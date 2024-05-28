@@ -40,7 +40,7 @@ class GroupScheduleSeeder extends Seeder
                             'room_id' => $group_teacher->room_id,
                             'direction_id' => $group_teacher->direction_id,
                             'day_id' => $group_teacher->day_id,
-                            'student_id' => $group_student->id,
+                            'student_id' => $group_student->student_id,
                             'attend' => 2,
                             'homework' => 2,
                             'ball' => 0,
@@ -49,6 +49,21 @@ class GroupScheduleSeeder extends Seeder
                 }
             }
         }
-
+        /*for ($i=0;$i < 100000; $i++){
+            GroupSchedule::create([
+                'group_id' => 1,
+                'teacher_id' => 1,
+                'date' => "2024-07-08",
+                'begin_time' => "18:00:00",
+                'end_time' => "19:00:00",
+                'room_id' => 1,
+                'direction_id' => 1,
+                'day_id' => 1,
+                'student_id' => 1,
+                'attend' => 2,
+                'homework' => 2,
+                'ball' => 0,
+            ]);
+        }*/
     }
 }
