@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CITY | EDUCATION</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -27,6 +28,7 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset("admin_lte_3.2.0/plugins/select2/css/select2.min.css")}}">
     <link rel="stylesheet" href="{{ asset("admin_lte_3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css")}}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
     <style>
         .my_select_class {
             -webkit-appearance: none;
@@ -142,7 +144,7 @@
 <script src="{{ asset("admin_lte_3.2.0/dist/js/pages/dashboard.js")}}"></script>
 <!-- Select2 -->
 <script src="{{ asset("admin_lte_3.2.0/plugins/select2/js/select2.full.min.js")}}"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 <script>
     $(function () {
         //Initialize Select2 Elements

@@ -14,15 +14,15 @@
                     @csrf
 
                     <div class="input-group mb-3">
-                        <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
+                        <input type="text" name="phone" id="phone" placeholder="(XX)XXX-XX-XX" class="form-control form-control-lg form-control-solid @error('phone') is-invalid @enderror" autocomplete="on"/>
+                        @error('phone')
+                        <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
+                                <span class="fa fa-phone"></span>
                             </div>
                         </div>
                     </div>
@@ -59,4 +59,11 @@
             <!-- /.login-card-body -->
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+    <script>
+        $('#phone').inputmask("(99)999-99-99");
+    </script>
 @endsection

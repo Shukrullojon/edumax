@@ -22,4 +22,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('group', \App\Http\Controllers\GroupController::class);
 
     Route::resource('attendance', \App\Http\Controllers\AttendanceController::class);
+    Route::post("attendance/change",[\App\Http\Controllers\AttendanceController::class,'attendanceChange'])->name("attendanceChange");
+    Route::get("attend/noattend",[\App\Http\Controllers\AttendanceController::class,'noattend'])->name("attend.noattend");
 });

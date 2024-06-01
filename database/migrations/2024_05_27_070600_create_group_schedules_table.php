@@ -25,6 +25,8 @@ return new class extends Migration
             $table->float('attend')->default(0);
             $table->float('homework')->default(0);
             $table->float('ball')->default(0);
+            $table->string('comment')->nullable();
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

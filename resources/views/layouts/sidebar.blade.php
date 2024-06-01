@@ -30,6 +30,16 @@
                     </li>
                 @endcan
 
+                @can('attendance-noattend')
+                    <li class="nav-item">
+                        <a href="{{ route('attend.noattend') }}"
+                           class="nav-link {{ Request::is('attend/noattend') ? "active":'' }}">
+                            <i class="fa fa-window-close"></i>
+                            <p>No Attend</p>
+                        </a>
+                    </li>
+                @endcan
+
                 @can('group-index')
                     <li class="nav-item">
                         <a href="{{ route('group.index') }}" class="nav-link {{ Request::is('group*') ? "active":'' }}">

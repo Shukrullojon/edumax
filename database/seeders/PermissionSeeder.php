@@ -115,6 +115,7 @@ class PermissionSeeder extends Seeder
 
             // Attendance
             ['name' => 'attendance-index'],
+            ['name' => 'attendance-noattend'],
 
             // Schedule
             ['name' => 'schedule-index'],

@@ -2,18 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Day;
+use App\Models\Group;
 use App\Models\GroupSchedule;
+use App\Models\GroupScheduleStudent;
 use App\Models\GroupTeacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $schedules = GroupSchedule::where('teacher_id', auth()->user()->id)
-            ->groupBy(['group_id','teacher_id'])
-            ->get();
+        $groups = GroupTeacher::where('teacher_id', auth()->user()->id)->latest()->get();
+        $days = Day::get();
+        $schedules = GroupSchedule::where('teacher_id', auth()->user()->id);
+        if ($request->group_id){
+            $schedules = $schedules->where('group_id',$request->group_id);
+        }
+        if ($request->day_id){
+            $schedules = $schedules->where('day_id',$request->day_id);
+        }
+        $schedules = $schedules->groupBy(['group_id','teacher_id'])->get();
         $datas = [];
         foreach ($schedules as $schedule){
             $sub_data = [
@@ -38,6 +48,8 @@ class AttendanceController extends Controller
                 $std = [];
                 foreach ($students as $s){
                     $std[$s->student_id] = [
+                        'date' => $s->date,
+                        'schedule_id' => $s->id,
                         'attendance' => $s->attend,
                         'homework' => $s->homework,
                         'ball' => $s->ball,
@@ -60,323 +72,87 @@ class AttendanceController extends Controller
 
             $datas[]=$sub_data;
         }
-
-        /*$datas = [
-            [
-                'group' => [
-                    'id' => 1,
-                    'name' => 'S0101',
-                    'cource' => '6 month',
-                    'day' => 'Du-se-cho',
-                    'time' => '13:00-14:00',
-                    'lang' => 'uz',
-                    'direction' => 'speaking',
-                ],
-                'days' => [
-                    '06.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                    '07.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                    '08.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                    '09.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                    '10.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                    '11.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                ],
-                'students' => [
-                    [
-                        'id' => 7,
-                        'name' => 'Yahyo 1',
-                        'surname' => 'Baxtiyorov 1',
-                        'age' => 25,
-                    ],
-                    [
-                        'id' => 6,
-                        'name' => 'Yahyo 2',
-                        'surname' => 'Baxtiyorov 2',
-                        'age' => 20,
-                    ],
-                    [
-                        'id' => 6,
-                        'name' => 'Yahyo 3',
-                        'surname' => 'Baxtiyorov 3',
-                        'age' => 20,
-                    ],
-                ],
-            ],
-
-            [
-                'group' => [
-                    'id' => 1,
-                    'name' => 'S0101',
-                    'cource' => '6 month',
-                    'day' => 'Du-se-cho',
-                    'time' => '13:00-14:00',
-                    'lang' => 'uz',
-                    'direction' => 'speaking',
-                ],
-                'days' => [
-                    '06.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                    '07.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                    '08.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                    '09.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                    '10.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 3,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                    '11.05.2024' => [
-                        'teacher' => 'F.Ahmad',
-                        'students' => [
-                            7 => [
-                                'attendance' => 2,
-                                'homework' => 2,
-                                'ball' => 0,
-                            ],
-                            6 => [
-                                'attendance' => 10,
-                                'homework' => 5,
-                                'ball' => 0,
-                            ],
-                            5 => [
-                                'attendance' => 7,
-                                'homework' => 7,
-                                'ball' => 0,
-                            ],
-                        ],
-                    ],
-                ],
-                'students' => [
-                    [
-                        'id' => 7,
-                        'name' => 'Yahyo 1',
-                        'surname' => 'Baxtiyorov 1',
-                        'age' => 25,
-                    ],
-                    [
-                        'id' => 6,
-                        'name' => 'Yahyo 2',
-                        'surname' => 'Baxtiyorov 2',
-                        'age' => 20,
-                    ],
-                    [
-                        'id' => 5,
-                        'name' => 'Yahyo 3',
-                        'surname' => 'Baxtiyorov 3',
-                        'age' => 20,
-                    ],
-                ],
-            ]
-        ];*/
-
-
         return view('attendance.index',[
             'schedules' => $schedules,
-            'datas' => $datas
+            'datas' => $datas,
+            'groups' => $groups,
+            'days' => $days,
         ]);
     }
 
+    public function attendanceChange(Request $request)
+    {
+        $schedule = GroupSchedule::find($request->schedule_id);
+        if (empty($schedule)){
+            return response()->json([
+                'status' => false,
+                'message' => "Malumotlarni o'zgartirishda xatolik sodir bo'ldi.",
+            ]);
+        }
 
+        if ($request->name == 'attendance'){
+            $schedule->update([
+                'attend' => $request->selected,
+            ]);
+            if ($request->selected == 0){
+                $schedule->update([
+                    'homework' => 0,
+                    'ball' => 0,
+                ]);
+            }
+        }else if($request->name == 'homework'){
+            $schedule->update([
+                'homework' => $request->selected,
+            ]);
+        }else if($request->name == 'ball'){
+            $likes = GroupSchedule::where('group_id',$schedule->group_id)
+                ->where('teacher_id',$schedule->teacher_id)
+                ->where('date',$schedule->date)
+                ->where('ball',3)
+                ->first();
+            if ($request->selected == 3) {
+                if ($schedule->attend == 2 and $schedule->homework == 2 and empty($likes)) {
+                    $schedule->update([
+                        'ball' => $request->selected,
+                    ]);
+                }
+            }else{
+                $schedule->update([
+                    'ball' => $request->selected,
+                ]);
+            }
+        }
+
+        return response()->json([
+            'status' => true,
+            'schedule' => $schedule->toArray(),
+            'message' => "Malumot muvaffaqiyatli o'zgartirildi",
+        ]);
+    }
+
+    public function noattend(Request $request)
+    {
+        // Bugun qaysi gruhlarga dars bo'lishi kerak edi
+        // Nechta student kelishi kerak edi
+        // Nechta kelmadi
+        // Kelmaganlar ro'yhati
+        $schedules = new GroupSchedule();
+        $schedules = $schedules->where('date',$request->date ? date("Y-m-d", strtotime($request->date)) : date("Y-m-d"));
+        $schedules = $schedules->latest()->groupBy('group_id')->get();
+        $groups = [];
+        foreach ($schedules as $schedule){
+            $info = [
+                'name' => $schedule->group->name,
+                'date' => $schedule->date,
+                'students' => 0,
+                'noattend' => 0,
+            ];
+            $groups[]=$info;
+        }
+        $noattend = GroupSchedule::where('date',$request->date ? date("Y-m-d", strtotime($request->date)) : date("Y-m-d"))->latest()->groupBy('group_id')->get();
+        return view('attendance.noattend',[
+            'groups' => $groups,
+            'noattend' => $noattend,
+        ]);
+    }
 }

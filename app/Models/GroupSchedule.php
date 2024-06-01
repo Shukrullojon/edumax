@@ -37,6 +37,11 @@ class GroupSchedule extends Model
         return $this->hasMany(GroupStudent::class,'group_id','group_id')->orderByDesc('id');
     }
 
+    public function student()
+    {
+        return $this->belongsTo(User::class,'user_id','id');
+    }
+
     public function teacher()
     {
         return $this->belongsTo(User::class,'teacher_id','id');
