@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
             'surname' => 'Fatulloyev',
             'email' => 'shukrullo@gmail.com',
             'phone' => '993011798',
-            'password' => Hash::make('12345678'),
+            'password' => Hash::make('993011798'),
             'filial_id' => 1,
         ]);
         $user->assignRole([Role::where('name','Admin')->first()->id]);
