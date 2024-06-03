@@ -56,7 +56,7 @@
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $group->name }}</td>
-                                        <td>{{ date('H:i',strtotime($group->start_hour)) }}</td>
+                                        <td>{{ date('H:i',strtotime($group->start_hour)) }} ({{ $group->day->name ?? '' }})</td>
                                         <td>{{ $group->cource->name ?? '' }}</td>
                                         <td>{{ $group->max_student }} ({{ count($group->students) }})</td>
                                         <td>{{ $group->max_teacher }} ({{ count($group->teachers) }})</td>
@@ -97,7 +97,7 @@
                             <tfooter>
                                 <tr>
                                     <td colspan="12">
-
+                                        {{ $groups->withQueryString()->links()   }}
                                     </td>
                                 </tr>
                             </tfooter>
@@ -126,6 +126,13 @@
                                                 <div class="form-group">
                                                     <strong>Cource:</strong>
                                                     {!! Form::select('cource_id', $cources,request()->get('cource_id'), ['placeholder' => '','maxlength'=> 100,'class' => 'form-control']) !!}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <strong>Day:</strong>
+                                                    {!! Form::select('day_id', $days,request()->get('day_id'), ['placeholder' => '','maxlength'=> 100,'class' => 'form-control']) !!}
                                                 </div>
                                             </div>
 

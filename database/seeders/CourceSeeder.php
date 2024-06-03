@@ -16,12 +16,12 @@ class CourceSeeder extends Seeder
     {
         $data = [
             [
-                'name' => 'Ingliz tili oyiga 480 000 UZS',
-                'time' => 90,
+                'name' => 'IELTS INTENSIV',
+                'time' => 120,
                 'during' => 6,
                 'filial_id' => Filial::select('id')->inRandomOrder()->first()->id,
                 'status' => 1,
-                'price' => 480000,
+                'price' => 1440000,
             ],
             [
                 'name' => 'INGLIZ TILI 3 OYDA',
@@ -32,12 +32,20 @@ class CourceSeeder extends Seeder
                 'price' => 2580000,
             ],
             [
-                'name' => 'IELTS INTENSIV ',
-                'time' => 120,
+                'name' => 'Ingliz tili oyiga 480 000',
+                'time' => 90,
+                'during' => 15,
+                'filial_id' => Filial::select('id')->inRandomOrder()->first()->id,
+                'status' => 1,
+                'price' => 480000,
+            ],
+            [
+                'name' => '6 oylik Intensive General',
+                'time' => 90,
                 'during' => 6,
                 'filial_id' => Filial::select('id')->inRandomOrder()->first()->id,
                 'status' => 1,
-                'price' => 1440000,
+                'price' => 1290000,
             ],
         ];
         foreach ($data as $d){

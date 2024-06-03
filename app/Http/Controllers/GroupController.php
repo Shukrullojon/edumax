@@ -32,6 +32,7 @@ class GroupController extends Controller
             'max_student',
             'max_teacher',
             'status',
+            'day_id',
             );
         if (isset($request->name)) {
             $groups->where('name', 'LIKE', '%' . $request->name . '%');
@@ -45,13 +46,18 @@ class GroupController extends Controller
         if (isset($request->status)) {
             $groups->where('status', $request->status);
         }
+        if (isset($request->day_id)) {
+            $groups->where('day_id', $request->day_id);
+        }
         $groups = $groups->latest()->paginate(20);
         $filials = Filial::all()->pluck('name', 'id');
         $cources = Cource::all()->pluck('name', 'id');
+        $days = Day::all()->pluck('name', 'id');
         return view('group.index', [
             'groups' => $groups,
             'filials' => $filials,
             'cources' => $cources,
+            'days' => $days,
         ]);
     }
 

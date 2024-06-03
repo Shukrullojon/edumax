@@ -24,6 +24,11 @@ class Group extends Model
         return $this->belongsTo(Filial::class);
     }
 
+    public function day()
+    {
+        return $this->belongsTo(Day::class);
+    }
+
     public function cource()
     {
         return $this->belongsTo(Cource::class);
