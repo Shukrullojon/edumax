@@ -49,7 +49,7 @@ class GroupController extends Controller
         if (isset($request->day_id)) {
             $groups->where('day_id', $request->day_id);
         }
-        $groups = $groups->latest()->paginate(20);
+        $groups = $groups->latest('groups.id')->paginate(20);
         $filials = Filial::all()->pluck('name', 'id');
         $cources = Cource::all()->pluck('name', 'id');
         $days = Day::all()->pluck('name', 'id');

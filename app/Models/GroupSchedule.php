@@ -49,6 +49,8 @@ class GroupSchedule extends Model
 
     public function days()
     {
-        return $this->hasMany(GroupSchedule::class,'group_id','group_id')->groupBy('date');
+        return $this->hasMany(GroupSchedule::class,'group_id','group_id')
+            ->where('teacher_id',auth()->user()->id)
+            ->groupBy('date');
     }
 }

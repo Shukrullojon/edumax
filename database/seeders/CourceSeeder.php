@@ -32,7 +32,7 @@ class CourceSeeder extends Seeder
                 'price' => 2580000,
             ],
             [
-                'name' => 'Ingliz tili oyiga 480 000',
+                'name' => 'Ingliz tili oyiga 480 000 UZS',
                 'time' => 90,
                 'during' => 15,
                 'filial_id' => Filial::select('id')->inRandomOrder()->first()->id,

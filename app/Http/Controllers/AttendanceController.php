@@ -41,7 +41,7 @@ class AttendanceController extends Controller
             ];
             foreach ($schedule->days as $d){
                 $students = GroupSchedule::where('group_id',$schedule->group_id)
-                    ->where('teacher_id',$d->teacher_id)
+                    ->where('teacher_id',auth()->user()->id)
                     ->where('date',$d->date)
                     ->orderByDesc('student_id')
                     ->get();
@@ -69,7 +69,6 @@ class AttendanceController extends Controller
                     'age' => 30,
                 ];
             }
-
             $datas[]=$sub_data;
         }
         return view('attendance.index',[

@@ -71,7 +71,11 @@
                                         <td>{{ substr($data['group']['lang'],0,3) }}</td>
                                         <td>{{ substr($data['group']['direction'],0,3) }}</td>
                                         @foreach($data['days'] as $key => $value)
-                                            <td colspan="3" style="line-height: 15px">{{ date("d.m.Y", strtotime($key)) }}</td>
+                                            <td colspan="3" style="line-height: 15px">
+                                                <p  style="margin: 0">{{ date("d.m.Y", strtotime($key)) }}</p>
+                                                <hr style="margin: 0">
+                                                <p  style="margin: 0">{{ date("D", strtotime($key)) }}</p>
+                                            </td>
                                         @endforeach
 
                                     </tr>
