@@ -86,4 +86,9 @@ class User extends Authenticatable
     public function interes_day(){
         return $this->belongsTo(Day::class,'interes_day_id','id');
     }
+
+    public function group_info()
+    {
+        return $this->hasOne(GroupStudent::class,'student_id','id')->where('status',1)->orderByDesc('id');
+    }
 }

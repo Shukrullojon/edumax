@@ -215,7 +215,7 @@ class GroupSeeder extends Seeder
             ],
             [
                 'id' => 16,
-                'name' => 'C-0201',
+                'name' => 'C-1201',
                 'start_date' => '2024-05-01',
                 'start_hour' => '15:30:00',
                 'filial_id' => 1,

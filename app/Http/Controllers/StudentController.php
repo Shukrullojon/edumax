@@ -55,11 +55,11 @@ class StudentController extends Controller
         }
 
         if (isset($request->group_id) and !empty($request->group_id)) {
-            $students = $students->join('group_student','group_student.student_id','=','users.id');
-            $students = $students->where('group_student.group_id', $request->group_id);
+            $students = $students->join('group_students','group_students.student_id','=','users.id');
+            $students = $students->where('group_students.group_id', $request->group_id);
         }
         $students = $students
-            ->latest('users.updated_at')
+            ->latest('users.id')
             ->groupBy('users.phone')
             ->paginate(30);
 

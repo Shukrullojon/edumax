@@ -145,7 +145,7 @@
                                         @endif
 
                                         @if(request()->get('status') != 1 and request()->get('status') != 2 and request()->get('status') != 3)
-                                            <td><i>{{ $student->group->group->name ?? '' }}</i></td>
+                                            <td><i>{{ $student->group_info->group->name ?? '' }}</i></td>
                                         @endif
                                         <td><i>{{ \App\Models\User::$student_status[$student->status] ?? '' }}</i></td>
                                         <td class="" width="15px">
@@ -210,6 +210,13 @@
                                                 <div class="form-group">
                                                     <strong>Surname:</strong>
                                                     {!! Form::text('surname', request()->get('surname'), ['placeholder' => 'Surname','maxlength'=> 100,'class' => 'form-control']) !!}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <strong>Group:</strong>
+                                                    {!! Form::select('group_id', $groups,request()->get('group_id'), ['placeholder' => '','maxlength'=> 100,'class' => 'form-control']) !!}
                                                 </div>
                                             </div>
 
